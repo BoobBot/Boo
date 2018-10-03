@@ -9,7 +9,7 @@ This is the self hosted version of the haunted bot we use on the official BoobBo
 * You will need a discord bot Token
 * You will need the id of your discord server
 
-##Running
+## Running
 * Clone or download the repo
 * cd to src 
 * python3.5 boo.py
