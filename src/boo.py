@@ -14,6 +14,8 @@ def get_troll():
 async def haunted(bot, guild_id):
     while bot.loop.is_running():
         home = bot.get_guild(int(guild_id))
+        if not home:
+            continue
         channels = [c for c in home.channels if isinstance(c, discord.TextChannel)]
         
         target = [m for m in home.members if not m.bot]
