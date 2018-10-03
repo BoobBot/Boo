@@ -1,5 +1,5 @@
 import json
-
+import configparser
 import discord
 import random
 import asyncio
@@ -12,7 +12,17 @@ def get_troll():
 
 
 async def haunted(bot, guild_id):
+    conf = configparser.ConfigParser()
+    conf.read('conf.ini')
+    interval = conf.get('default', 'interval')
+    try:
+        int(interval)
+    except ValueError:
+        print('error interval must be an integer')
+        exit(-1)
+    print(interval)
     while bot.loop.is_running():
+        
         home = bot.get_guild(int(guild_id))
         if not home:
             continue
@@ -28,7 +38,7 @@ async def haunted(bot, guild_id):
             await msg.delete()
         except discord.HTTPException:
             continue
-        await asyncio.sleep(300)
+        await asyncio.sleep(interval)
 
 
 class HauntedGuild(discord.Client):
@@ -47,7 +57,7 @@ class HauntedGuild(discord.Client):
 @click.command()
 @click.option('--token', prompt="Bot Token?", help="Discord bot token")
 @click.option("--guild_id", prompt="Guild id", help="id of your discord server")
-def start(token, guild_id):
+def start(token=None, guild_id=None):
     bot = HauntedGuild(guild_id)
     bot.run(token)
 
