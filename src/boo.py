@@ -15,17 +15,16 @@ async def haunted(bot, guild_id):
     while bot.loop.is_running():
         home = bot.get_guild(int(guild_id))
         channels = [c for c in home.channels if isinstance(c, discord.TextChannel)]
-        members = [m for m in home.members if not m.bot]
-        lul = [channels, members]
-        for lol in lul:
-            random.shuffle(lol)
+        
+        target = [m for m in home.members if not m.bot]
+        target.extend([r for r in home.roles if r.mentionable and r != home.default_role])
+
         try:
             msg = await random.choice(channels).send(
-                "{}, {}".format(random.choice(members).mention, get_troll()))
+                "{}, {}".format(random.choice(target).mention, get_troll()))
             print(msg.content)
             await msg.delete()
-        except Exception as ex:
-            print(ex)
+        except discord.HTTPException:
             continue
         await asyncio.sleep(300)
 
