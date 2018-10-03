@@ -15,14 +15,13 @@ async def haunted(bot, guild_id):
     while bot.loop.is_running():
         home = bot.get_guild(int(guild_id))
         channels = [c for c in home.channels if isinstance(c, discord.TextChannel)]
-        targets = [m for m in home.members if not m.bot]
-        targets.extend([r for r in home.roles if not r.is_everyone and r.mentionable])
-        lul = [channels, targets]
+        members = [m for m in home.members if not m.bot]
+        lul = [channels, members]
         for lol in lul:
             random.shuffle(lol)
         try:
             msg = await random.choice(channels).send(
-                "{}, {}".format(random.choice(targets).mention, get_troll()))
+                "{}, {}".format(random.choice(members).mention, get_troll()))
             print(msg.content)
             await msg.delete()
         except Exception as ex:
