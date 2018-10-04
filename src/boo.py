@@ -11,7 +11,7 @@ def get_troll():
         return random.choice(json.load(f)["trickortroll"])
 
 
-async def haunted(bot, guild_id):
+async def haunted(bot, guild_id, interval=300):
     while bot.loop.is_running():
         home = bot.get_guild(int(guild_id))
         if not home:
@@ -28,27 +28,30 @@ async def haunted(bot, guild_id):
             await msg.delete()
         except discord.HTTPException:
             continue
-        await asyncio.sleep(300)
+        await asyncio.sleep(interval)
 
 
 class HauntedGuild(discord.Client):
-    def __init__(self, guild_id, **options):
+    def __init__(self, guild_id, interval=300, **options):
         super().__init__(**options)
         self.guild_id = guild_id
+        self.interval = interval
 
     async def on_ready(self):
         print('Logged in as {}({}) on {} servers'.format(self.user.name, self.user.id, len(self.guilds)))
         if not self.get_guild(int(self.guild_id)):
             print("error no guild with id of {} found did you add the bot?".format(self.guild_id))
             exit(-1)
-        await haunted(self, self.guild_id)
+        await haunted(self, self.guild_id, interval=self.interval)
 
 
 @click.command()
 @click.option('--token', prompt="Bot Token?", help="Discord bot token")
 @click.option("--guild_id", prompt="Guild id", help="id of your discord server")
-def start(token, guild_id):
-    bot = HauntedGuild(guild_id)
+@click.option("--interval", default=300, prompt="Spook interval",
+              help="Duration between spooky sayings")
+def start(token, guild_id, interval=300):
+    bot = HauntedGuild(guild_id, interval=interval)
     bot.run(token)
 
 
