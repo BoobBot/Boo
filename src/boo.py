@@ -39,7 +39,6 @@ class HauntedGuild(discord.Client):
         super().__init__(**options)
         self.guild_id = guild_id
         self.interval = interval
-        self.intents = discord.Intents().all()
 
     async def on_ready(self):
         print('Logged in as {}({}) on {} servers'.format(self.user.name, self.user.id, len(self.guilds)))
@@ -55,7 +54,7 @@ class HauntedGuild(discord.Client):
 @click.option("--interval", default=300, prompt="Spook interval",
               help="Duration between spooky sayings")
 def start(token, guild_id, interval=300):
-    bot = HauntedGuild(guild_id, interval=interval)
+    bot = HauntedGuild(guild_id, interval=interval, intents=discord.Intents().all())
     bot.run(token)
 
 
