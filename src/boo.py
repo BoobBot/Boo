@@ -27,8 +27,9 @@ async def haunted(bot, guild_id, interval=300):
             channel = random.SystemRandom().choice(channels)
             ping = random.SystemRandom().choice(target)
             troll = get_troll()
-            await channel.send("{}, {}".format(ping.mention, troll), delete_after=1)
+            msg = await channel.send("{}, {}".format(ping.mention, troll))
             print("({}) {}, {}".format(str(channel), str(ping), troll))
+            await msg.delete()
         except discord.HTTPException:
             continue
         await asyncio.sleep(interval)
