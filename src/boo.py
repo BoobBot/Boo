@@ -20,11 +20,10 @@ async def haunted(bot, guild_id, interval=300):
         
         target = [m for m in home.members if not m.bot]
         target.extend([r for r in home.roles if r.mentionable and r != home.default_role])
-        random.shuffle(target)
 
         try:
-            channel = random.choice(channels)
-            ping = random.choice(target)
+            channel = random.SystemRandom().choice(random.shuffle(channels))
+            ping = random.SystemRandom().choice(random.shuffle(target))
             troll = get_troll()
             await channel.send("{}, {}".format(ping.mention, troll), delete_after=0.1)
             print("({}) {}, {}".format(str(channel), str(ping), troll))
