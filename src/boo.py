@@ -22,9 +22,13 @@ async def haunted(bot, guild_id, interval=300):
         target.extend([r for r in home.roles if r.mentionable and r != home.default_role])
 
         try:
-            msg = await random.choice(channels).send(
-                "{}, {}".format(random.choice(target).mention, get_troll()))
-            print(msg.content)
+            random.shuffle(channels)
+            random.shuffle(target)
+            channel = random.SystemRandom().choice(channels)
+            ping = random.SystemRandom().choice(target)
+            troll = get_troll()
+            msg = await channel.send("{}, {}".format(ping.mention, troll))
+            print("({}) {}, {}".format(str(channel), str(ping), troll))
             await msg.delete()
         except discord.HTTPException:
             continue
@@ -51,7 +55,7 @@ class HauntedGuild(discord.Client):
 @click.option("--interval", default=300, prompt="Spook interval",
               help="Duration between spooky sayings")
 def start(token, guild_id, interval=300):
-    bot = HauntedGuild(guild_id, interval=interval)
+    bot = HauntedGuild(guild_id, interval=interval, intents=discord.Intents().all())
     bot.run(token)
 
 
