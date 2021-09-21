@@ -27,7 +27,7 @@ async def haunted(bot, guild_id, interval=300):
             channel = random.SystemRandom().choice(channels)
             ping = random.SystemRandom().choice(target)
             troll = get_troll()
-            await channel.send("{}, {}".format(ping.mention, troll), delete_after=0.1)
+            await channel.send("{}, {}".format(ping.mention, troll), delete_after=1)
             print("({}) {}, {}".format(str(channel), str(ping), troll))
         except discord.HTTPException:
             continue
@@ -39,6 +39,7 @@ class HauntedGuild(discord.Client):
         super().__init__(**options)
         self.guild_id = guild_id
         self.interval = interval
+        self.intents = discord.Intents().all()
 
     async def on_ready(self):
         print('Logged in as {}({}) on {} servers'.format(self.user.name, self.user.id, len(self.guilds)))
