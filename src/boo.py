@@ -20,7 +20,7 @@ async def haunted(bot, guild_id, role_id, interval=300):
         if not home:
             continue
         channels = [c for c in home.channels if isinstance(c, discord.TextChannel)]
-        role = discord.utils.get(home.roles, id=role_id)
+        role = discord.utils.get(home.roles, id=int(role_id))
         if role:
             target = role.members
             print(f"role found using {role.name}")
