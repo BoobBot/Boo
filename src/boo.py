@@ -23,9 +23,11 @@ async def haunted(bot, guild_id, role_id, interval=300):
         role = discord.utils.get(home.roles, id=role_id)
         if role:
             target = role.members
+            print(f"role found using {role.name}")
         else:
             target = [m for m in home.members if not m.bot]
             target.extend([r for r in home.roles if r.mentionable and r != home.default_role])
+            print(f"no role found using {len(target)} members/roles")
 
         try:
             random.shuffle(channels)
