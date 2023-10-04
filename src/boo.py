@@ -22,7 +22,7 @@ async def haunted(bot, guild_id, role_id, category_id, interval=300):
         category = discord.utils.get(home.categories, id=int(category_id))
         role = discord.utils.get(home.roles, id=int(role_id))
         if category:
-            channels = category.channels
+            channels = category.text_channels
             print(f"found category using {category.name}")
         else:
             channels = home.text_channels
